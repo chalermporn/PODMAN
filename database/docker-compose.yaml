@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  api:
+    image: api:database
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:3000
+    environment:
+      - APP_NAME=API from Compose
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=P@ssw0rd 
+      - DB_DATABASE=arise 
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: mariadb
+    ports:
+      - 3306:3306
+    environment: 
+      - MYSQL_ROOT_PASSWORD=P@ssw0rd
+      - MYSQL_DATABASE=arise
