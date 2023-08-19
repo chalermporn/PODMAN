@@ -1,14 +1,14 @@
-# /Users/bird/DEMO/PODMAN/api-rust/target/debug/api
+# Build stage
 FROM rust:1.71.1 AS builder
 WORKDIR /usr/src/myapp
 COPY . .
-
 RUN cargo build --release
-ENTRYPOINT [ "/usr/src/myapp/target/release/app" ]
+# ENTRYPOINT [ "/usr/src/myapp/target/release/app" ]
 
-# FROM debian:buster-slim
-# RUN apt-get update && apt-get install -y libssl-dev && rm -rf /var/lib/apt/lists/*
-# COPY --from=builder /usr/src/myapp/target/release/app /usr/local/bin/app
-# EXPOSE 3000
-# ENV RUST_LOG=info
-# CMD ["/app"]  
+# Final stage
+FROM debian:bullseye-slim
+COPY --from=builder /usr/src/myapp/target/release/app /usr/local/bin/app
+
+# Set the binary as the default command
+CMD ["app"]
+
